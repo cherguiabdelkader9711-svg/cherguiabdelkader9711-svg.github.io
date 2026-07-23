@@ -24,7 +24,7 @@ jobs:
 
       - name: Create and Run Downloader Script
         env:
-          YOUTUBE_URL: 'https://www.youtube.com/watch?v=BaW_jenozKc'
+          YOUTUBE_URL: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
         run: |
           # إنشاء ملف البايثون تلقائياً أثناء التشغيل لتجنب مشاكل الرفع
           cat << 'EOF' > downloader.py
@@ -42,9 +42,13 @@ jobs:
               'outtmpl': '%(title)s.%(ext)s',
           }
 
-          with YoutubeDL(ydl_opts) as ydl:
-              info = ydl.extract_info(url, download=True)
-              print(f"Successfully downloaded: {info.get('title')}")
+          try:
+              with YoutubeDL(ydl_opts) as ydl:
+                  info = ydl.extract_info(url, download=True)
+                  print(f"Successfully downloaded: {info.get('title')}")
+          except Exception as e:
+              print(f"Error: Could not download video - {str(e)}")
+              exit(1)
           EOF
 
           # تشغيل السكربت فوراً
