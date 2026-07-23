@@ -1,0 +1,48 @@
+import os
+from yt_dlp import YoutubeDL
+
+def download_youtube(url, mode='video'):
+    download_dir = os.path.join(os.getcwd(), 'downloads')
+    os.makedirs(download_dir, exist_ok=True)
+
+    ydl_opts = {}
+
+    if mode == 'video':
+        print("🎬 جاري تحميل الفيديو بأعلى جودة...")
+        ydl_opts = {
+            'format': 'bestvideo+bestaudio/best',
+            'outtmpl': os.path.join(download_dir, '%(title)s.%(ext)s'),
+        }
+    elif mode == 'audio':
+        print("🎵 جاري استخراج وتحميل الصوت (MP3)...")
+        ydl_opts = {
+            'format': 'bestaudio/best',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }],
+            'outtmpl': os.path.join(download_dir, '%(title)s.%(ext)s'),
+        }
+    elif mode == 'text':
+        print("📄 جاري استخراج ملف النصوص والترجمة...")
+        ydl_opts = {
+            'skip_download': True,
+            'writesubtitles': True,
+            'writeautomaticsub': True,
+            'subtitleslangs': ['ar', 'en'],
+            'outtmpl': os.path.join(download_dir, '%(title)s_transcript.%(ext)s'),
+        }
+
+    try:
+        with YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
+            print("✅ تم التحميل بنجاح وتم حفظ الملف داخل مجلد 'downloads'.")
+    except Exception as e:
+        print(f"❌ حدث خطأ أثناء العملية: {e}")
+
+if __name__ == "__main__":
+    # رابط تجريبي أو افتراضي لتشغيل السكريبت تلقائياً عبر غيت هاب
+    test_url = os.environ.get('YOUTUBE_URL', 'https://www.youtube.com/watch?v=BaW_jenozKc')
+    print(f"=== بدء المعالجة للرابط: {test_url} ===")
+    download_youtube(test_url, mode='audio')
