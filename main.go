@@ -15,18 +15,18 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	<html lang="ar" dir="rtl">
 	<head>
 	    <meta charset="UTF-8">
-	    <title>موقع تحميل فيديوهات يوتيوب</title>
+	    <title>محمل فيديوهات يوتيوب</title>
 	    <style>
 	        body { font-family: Tahoma, sans-serif; background: #0f172a; color: #fff; text-align: center; padding-top: 50px; }
 	        input { width: 60%; padding: 12px; font-size: 16px; border-radius: 5px; border: none; outline: none; }
-	        button { padding: 12px 25px; font-size: 16px; background: #22c55e; color: #white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+	        button { padding: 12px 25px; font-size: 16px; background: #22c55e; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
 	        button:hover { background: #16a34a; }
 	        .container { background: #1e293b; padding: 40px; border-radius: 10px; display: inline-block; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
 	    </style>
 	</head>
 	<body>
 	    <div class="container">
-	        <h2>محمل فيديوهات يوتيوب الذكي (Go)</h2>
+	        <h2>تحميل فيديوهات يوتيوب</h2>
 	        <form action="/download" method="GET">
 	            <input type="text" name="url" placeholder="أدخل رابط فيديو يوتيوب هنا..." required>
 	            <br><br>
@@ -53,7 +53,6 @@ func downloadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// اختيار أعلى دقة متاحة تحتوي على فيديو وصوت مدمج أو صيغة قياسية
 	format := &video.Formats[0]
 	stream, size, err := client.GetStream(video, format)
 	if err != nil {
@@ -62,12 +61,10 @@ func downloadHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer stream.Close()
 
-	// إعداد الهيدر ليدر المتصفح بتحميل الملف مباشرة بجهاز المستخدم
-	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s.mp4\"", video.Title))
+	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"video.mp4\""))
 	w.Header().Set("Content-Type", "video/mp4")
 	w.Header().Set("Content-Length", fmt.Sprintf("%d", size))
 
-	// نقل الدفق مباشرة إلى متصفح المستخدم
 	_, _ = io.Copy(w, stream)
 }
 
@@ -77,7 +74,7 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080"
+		port = "10000"
 	}
 
 	fmt.Println("Server is running on port " + port)
