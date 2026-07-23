@@ -12,7 +12,6 @@
             --transition-speed: 0.4s;
         }
 
-        /* الثيم الداكن (Dark Theme) */
         [data-theme="dark"] {
             --bg-color: #030712;
             --text-main: #f9fafb;
@@ -27,7 +26,6 @@
             --modal-bg: rgba(17, 24, 39, 0.95);
         }
 
-        /* الثيم الفاتح (Light Theme) */
         [data-theme="light"] {
             --bg-color: #f8fafc;
             --text-main: #0f172a;
@@ -47,7 +45,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Inter', sans-serif;
-            transition: background-color var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed), box-shadow var(--transition-speed);
+            transition: background-color var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed);
         }
 
         body {
@@ -61,7 +59,6 @@
             position: relative;
         }
 
-        /* خلفية جمالية متحركة خفيفة */
         .ambient-glow {
             position: fixed;
             top: -20vh;
@@ -79,7 +76,6 @@
         header {
             background: var(--header-bg);
             backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--card-border);
             padding: 18px 40px;
             display: flex;
@@ -112,12 +108,6 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.05);
-            border-color: var(--primary);
         }
 
         main {
@@ -135,7 +125,6 @@
             font-size: 3.8rem;
             color: #ef4444;
             margin-bottom: 15px;
-            filter: drop-shadow(0 4px 12px rgba(239, 68, 68, 0.3));
             animation: float 3s ease-in-out infinite;
         }
 
@@ -148,7 +137,6 @@
             font-size: 2.5rem;
             font-weight: 800;
             margin-bottom: 12px;
-            letter-spacing: -0.5px;
         }
 
         p.subtitle {
@@ -159,7 +147,6 @@
             line-height: 1.6;
         }
 
-        /* صندوق إدخال الرابط الجمالي */
         .download-box {
             background: var(--card-bg);
             backdrop-filter: blur(20px);
@@ -172,10 +159,6 @@
             margin-bottom: 15px;
         }
 
-        .download-box:focus-within {
-            box-shadow: 0 0 0 2px var(--primary), 0 15px 35px rgba(0, 0, 0, 0.2);
-        }
-
         .download-box input {
             flex: 1;
             border: none;
@@ -184,11 +167,6 @@
             font-size: 1rem;
             color: var(--text-main);
             background: transparent;
-        }
-
-        .download-box input::placeholder {
-            color: var(--text-muted);
-            opacity: 0.7;
         }
 
         .download-box button {
@@ -203,15 +181,8 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 15px var(--neon-glow);
         }
 
-        .download-box button:hover {
-            background: var(--primary-hover);
-            transform: translateY(-1px);
-        }
-
-        /* نافذة الخيارات (Modal) المنبثقة */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -243,12 +214,6 @@
             max-width: 480px;
             box-shadow: 0 25px 50px rgba(0,0,0,0.3);
             text-align: left;
-            transform: scale(0.95);
-            transition: transform 0.3s ease;
-        }
-
-        .modal-overlay.active .modal-content {
-            transform: scale(1);
         }
 
         .modal-header {
@@ -258,11 +223,6 @@
             margin-bottom: 22px;
             border-bottom: 1px solid var(--card-border);
             padding-bottom: 14px;
-        }
-
-        .modal-header h3 {
-            font-size: 1.2rem;
-            font-weight: 700;
         }
 
         .close-modal {
@@ -276,11 +236,6 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-        }
-
-        .close-modal:hover {
-            color: var(--text-main);
-            background: var(--card-border);
         }
 
         .download-btn-option {
@@ -297,14 +252,13 @@
             font-weight: 600;
             font-size: 0.95rem;
             cursor: pointer;
+            text-decoration: none;
         }
 
         .download-btn-option:hover {
             background: var(--primary);
             color: #fff;
             border-color: var(--primary);
-            box-shadow: 0 5px 15px var(--neon-glow);
-            transform: translateX(4px);
         }
 
         footer {
@@ -314,13 +268,6 @@
             color: var(--text-muted);
             border-top: 1px solid var(--card-border);
             background: var(--header-bg);
-        }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 2rem; }
-            .download-box { flex-direction: column; background: transparent; box-shadow: none; padding: 0; }
-            .download-box input { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; margin-bottom: 10px; padding: 16px; }
-            .download-box button { width: 100%; padding: 14px; justify-content: center; border-radius: 12px; }
         }
     </style>
 </head>
@@ -332,7 +279,7 @@
         <a href="#" class="logo" onclick="return false;">
             <i class="fa-solid fa-infinity"></i> MediaFlow Pro
         </a>
-        <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" title="تغيير المظهر">
+        <button class="theme-toggle" onclick="toggleTheme()">
             <i class="fa-solid fa-moon" id="themeIcon"></i>
         </button>
     </header>
@@ -342,7 +289,7 @@
             <i class="fa-brands fa-youtube"></i>
         </div>
         <h1>Téléchargeur de vidéos YouTube</h1>
-        <p class="subtitle">Collez votre URL ci-dessous pour lancer le traitement en toute fluidité.</p>
+        <p class="subtitle">Collez votre URL ci-dessous pour générer les liens de téléchargement instantanément.</p>
 
         <div class="download-box">
             <input type="text" id="urlInput" placeholder="https://www.youtube.com/watch?v=...">
@@ -355,19 +302,12 @@
     <div class="modal-overlay" id="downloadModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Options de Traitement</h3>
+                <h3>Options de Téléchargement</h3>
                 <button class="close-modal" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
-            <div class="option-group">
-                <button class="download-btn-option" onclick="startProcess('Vidéo 1080p')">
-                    <span><i class="fa-solid fa-file-video"></i> Vidéo 1080p (MP4)</span>
-                    <i class="fa-solid fa-arrow-right"></i>
-                </button>
-                <button class="download-btn-option" onclick="startProcess('Audio MP3')">
-                    <span><i class="fa-solid fa-music"></i> Audio MP3</span>
-                    <i class="fa-solid fa-arrow-right"></i>
-                </button>
+            <div class="option-group" id="downloadOptionsContainer">
+                <!-- سيتم توليد الروابط هنا تلقائياً -->
             </div>
         </div>
     </div>
@@ -379,23 +319,42 @@
     <script>
         const modal = document.getElementById('downloadModal');
 
+        function extractVideoID(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
         function openDownloadModal() {
             const url = document.getElementById('urlInput').value.trim();
-            if(!url) {
-                alert('Veuillez entrer une URL valide !');
+            const videoID = extractVideoID(url);
+            
+            if(!videoID) {
+                alert('Veuillez entrer une URL YouTube valide !');
                 return;
             }
+
+            const container = document.getElementById('downloadOptionsContainer');
+            container.innerHTML = `
+                <a href="https://www.youtube.com/watch?v=${videoID}" target="_blank" class="download-btn-option">
+                    <span><i class="fa-solid fa-file-video"></i> Regarder / Télécharger (1080p)</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+                <a href="https://loader.to/api/button/?url=${encodeURIComponent(url)}" target="_blank" class="download-btn-option">
+                    <span><i class="fa-solid fa-download"></i> Format MP4 Direct</span>
+                    <i class="fa-solid fa-download"></i>
+                </a>
+                <a href="https://loader.to/api/button/?url=${encodeURIComponent(url)}" target="_blank" class="download-btn-option">
+                    <span><i class="fa-solid fa-music"></i> Format MP3 Audio</span>
+                    <i class="fa-solid fa-download"></i>
+                </a>
+            `;
+
             modal.classList.add('active');
         }
 
         function closeModal() {
             modal.classList.remove('active');
-        }
-
-        function startProcess(optionName) {
-            const url = document.getElementById('urlInput').value.trim();
-            closeModal();
-            alert(`✅ Option sélectionnée : ${optionName}\n🔗 Lien : ${url}\n\nLe traitement est prêt.`);
         }
 
         function toggleTheme() {
