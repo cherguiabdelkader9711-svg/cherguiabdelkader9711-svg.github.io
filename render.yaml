@@ -1,10 +1,10 @@
 services:
   - type: web
-    name: video-downloader-go
+    name: video-downloader-aek
     env: go
     region: frankfurt
     plan: free
-    buildCommand: go mod init app && go get github.com/kkdai/youtube/v2 && go build -o app .
+    buildCommand: go env -w GO111MODULE=off && go build -o app main.go
     startCommand: ./app
     envVars:
       - key: PORT
