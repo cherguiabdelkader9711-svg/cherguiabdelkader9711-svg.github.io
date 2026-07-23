@@ -1,8 +1,7 @@
 import os
 from yt_dlp import YoutubeDL
 
-def download_youtube(url, mode='video'):
-    # تحديد مسار مجلد التحميلات في جذر المشروع تلقائياً
+def download_youtube(url, mode='audio'):
     download_dir = os.path.join(os.getcwd(), 'downloads')
     os.makedirs(download_dir, exist_ok=True)
 
@@ -45,24 +44,13 @@ def download_youtube(url, mode='video'):
 if __name__ == "__main__":
     print("=== نظام التحميل التلقائي (yt-dlp) ===")
     
-    # التحقق مما إذا كان الرابط قادماً من بيئة غيت هاب أومرفوعاً كمتغير بيئة، وإلا يطلب مدخلات محلية
-    test_url = os.environ.get('YOUTUBE_URL', '').strip()
+    # جلب الرابط من متغيرات البيئة في غيت هاب أو تعيين قيمة افتراضية
+    video_url = os.environ.get('YOUTUBE_URL', '').strip()
     
-    if not test_url:
+    if not video_url:
         video_url = input("أدخل رابط فيديو يوتيوب أو Short: ").strip()
-        print("\nاختر وضع التحميل:")
-        print("1. فيديو (video)")
-        print("2. صوت فقط (audio)")
-        print("3. نص / ترجمة (text)")
-        
-        choice = input("أدخل الرقم (1 أو 2 أو 3): ").strip()
-        mode_map = {'1': 'video', '2': 'audio', '3': 'text'}
-        selected_mode = mode_map.get(choice, 'video')
-    else:
-        video_url = test_url
-        selected_mode = 'audio' # الوضع الافتراضي عند التشغيل التلقائي بالسحاب
     
     if video_url:
-        download_youtube(video_url, selected_mode)
+        download_youtube(video_url, mode='audio')
     else:
-        print("⚠️ الرابط فارغ أو غير صالح! يرجى التأكد من الإدخال.")
+        print("⚠️ الرابط فارغ أو غير صالح!")
