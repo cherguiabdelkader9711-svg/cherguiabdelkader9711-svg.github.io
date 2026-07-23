@@ -23,6 +23,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install yt-dlp
 
-      - name: Run Downloader Script
+            - name: Run Downloader Script
         run: |
           python downloader.py
+
