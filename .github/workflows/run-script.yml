@@ -1,9 +1,12 @@
-name: Run Python Script Daily
+name: Run Python Downloader & Save Artifact
 
 on:
-  schedule:
-    - cron: '0 0 * * *'
   workflow_dispatch:
+    inputs:
+      video_url:
+        description: 'YouTube Video URL'
+        required: true
+        type: string
 
 jobs:
   run-python:
@@ -24,9 +27,8 @@ jobs:
 
       - name: Create and Run Downloader Script
         env:
-          YOUTUBE_URL: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+          YOUTUBE_URL: '${{ github.event.inputs.video_url }}'
         run: |
-          # إنشاء ملف البايثون تلقائياً أثناء التشغيل لتجنب مشاكل الرفع
           cat << 'EOF' > downloader.py
           import os
           from yt_dlp import YoutubeDL
@@ -39,10 +41,11 @@ jobs:
           print(f"Downloading: {url}")
           ydl_opts = {
               'format': 'best',
-              'outtmpl': '%(title)s.%(ext)s',
+              'outtmpl': 'downloads/%(title)s.%(ext)s',
           }
 
           try:
+              os.makedirs('downloads', exist_ok=True)
               with YoutubeDL(ydl_opts) as ydl:
                   info = ydl.extract_info(url, download=True)
                   print(f"Successfully downloaded: {info.get('title')}")
@@ -51,5 +54,10 @@ jobs:
               exit(1)
           EOF
 
-          # تشغيل السكربت فوراً
           python downloader.py
+
+      - name: Upload Downloaded Video
+        uses: actions/upload-artifact@v4
+        with:
+          name: youtube-video
+          path: downloads/
