@@ -15,7 +15,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	<html lang="ar" dir="rtl">
 	<head>
 	    <meta charset="UTF-8">
-	    <title>محمل فيديوهات يوتيوب</title>
+	    <title>محمل فيديوهات يوتيوب الاحترافي</title>
 	    <style>
 	        body { font-family: Tahoma, sans-serif; background: #0f172a; color: #fff; text-align: center; padding-top: 50px; }
 	        input { width: 60%; padding: 12px; font-size: 16px; border-radius: 5px; border: none; outline: none; }
@@ -26,7 +26,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	</head>
 	<body>
 	    <div class="container">
-	        <h2>تحميل فيديوهات يوتيوب</h2>
+	        <h2>تحميل فيديوهات يوتيوب بأفضل جودة</h2>
 	        <form action="/download" method="GET">
 	            <input type="text" name="url" placeholder="أدخل رابط فيديو يوتيوب هنا..." required>
 	            <br><br>
@@ -53,8 +53,26 @@ func downloadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	format := &video.Formats[0]
-	stream, size, err := client.GetStream(video, format)
+	// البحث عن دقة مناسبة تحتوي على فيديو وصوت معاً
+	var targetFormat *youtube.Format
+	for _, f := range video.Formats {
+		if f.QualityLabel != "" && f.MimeType != "" {
+			targetFormat = &f
+			break
+		}
+	}
+
+	// إذا لم يجد صيغة بمعايير محددة، يأخذ أول صيغة متاحة لتجنب الانهيار
+	if targetFormat == nil && len(video.Formats) > 0 {
+		targetFormat = &video.Formats[0]
+	}
+
+	if targetFormat == nil {
+		http.Error(w, "عقداً، لا توجد صيغة متاحة لهذا الفيديو", http.StatusInternalServerError)
+		return
+	}
+
+	stream, size, err := client.GetStream(video, targetFormat)
 	if err != nil {
 		http.Error(w, "فشل في بدء التحميل: "+err.Error(), http.StatusInternalServerError)
 		return
@@ -63,7 +81,9 @@ func downloadHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"video.mp4\""))
 	w.Header().Set("Content-Type", "video/mp4")
-	w.Header().Set("Content-Length", fmt.Sprintf("%d", size))
+	if size > 0 {
+		w.Header().Set("Content-Length", fmt.Sprintf("%d", size))
+	}
 
 	_, _ = io.Copy(w, stream)
 }
