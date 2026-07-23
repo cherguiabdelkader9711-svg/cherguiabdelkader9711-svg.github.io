@@ -3,19 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MediaFlow Pro - Téléchargeur YouTube Avancé</title>
-    <!-- خطوط غوغل الحديثة -->
+    <title>MediaFlow Pro - Téléchargeur Rapide</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- أيقونات FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
      
     <style>
         :root {
-            --transition-speed: 0.4s;
-        }
-
-        /* الثيم الداكن (Dark Theme) */
-        [data-theme="dark"] {
             --bg-color: #030712;
             --text-main: #f9fafb;
             --text-muted: #9ca3af;
@@ -23,294 +16,77 @@
             --card-border: rgba(255, 255, 255, 0.08);
             --primary: #3b82f6;
             --primary-hover: #2563eb;
-            --neon-glow: rgba(59, 130, 246, 0.4);
-            --input-bg: rgba(255, 255, 255, 0.03);
             --header-bg: rgba(3, 7, 18, 0.8);
-            --modal-bg: rgba(17, 24, 39, 0.95);
         }
 
-        /* الثيم الفاتح (Light Theme) */
-        [data-theme="light"] {
-            --bg-color: #f8fafc;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --card-bg: rgba(255, 255, 255, 0.85);
-            --card-border: rgba(0, 0, 0, 0.08);
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --neon-glow: rgba(37, 99, 235, 0.3);
-            --input-bg: rgba(0, 0, 0, 0.02);
-            --header-bg: rgba(248, 250, 252, 0.8);
-            --modal-bg: rgba(255, 255, 255, 0.98);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-            transition: background-color var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed), box-shadow var(--transition-speed);
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* خلفية جمالية متحركة خفيفة */
-        .ambient-glow {
-            position: fixed;
-            top: -20vh;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 600px;
-            height: 350px;
-            background: var(--primary);
-            filter: blur(120px);
-            opacity: 0.15;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        header {
-            background: var(--header-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--card-border);
-            padding: 18px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 1.35rem;
-            color: var(--primary);
-            text-decoration: none;
-            text-shadow: 0 0 20px var(--neon-glow);
-        }
-
-        .theme-toggle {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            color: var(--text-main);
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.05);
-            border-color: var(--primary);
-        }
-
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
-            text-align: center;
-            z-index: 2;
-            max-width: 700px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .hero-icon {
-            font-size: 3.8rem;
-            color: #ef4444;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 4px 12px rgba(239, 68, 68, 0.3));
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-
-        h1 {
-            font-size: 2.3rem;
-            font-weight: 800;
-            margin-bottom: 12px;
-            letter-spacing: -0.5px;
-        }
-
-        p.subtitle {
-            color: var(--text-muted);
-            font-size: 1.05rem;
-            margin-bottom: 35px;
-            line-height: 1.6;
-        }
-
-        /* صندوق إدخال الرابط الجمالي */
-        .download-box {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            padding: 8px;
-            border-radius: 16px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15), 0 0 0 1px var(--card-border);
-            display: flex;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-
-        .download-box:focus-within {
-            box-shadow: 0 0 0 2px var(--primary), 0 15px 35px rgba(0, 0, 0, 0.2);
-        }
-
-        .download-box input {
-            flex: 1;
-            border: none;
-            outline: none;
-            padding: 14px 18px;
-            font-size: 1rem;
-            color: var(--text-main);
-            background: transparent;
-        }
-
-        .download-box input::placeholder {
-            color: var(--text-muted);
-            opacity: 0.7;
-        }
-
-        .download-box button {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 0 26px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            border-radius: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 15px var(--neon-glow);
-        }
-
-        .download-box button:hover {
-            background: var(--primary-hover);
-            transform: translateY(-1px);
-        }
-
-        /* صندوق الحالة */
-        .status-box {
-            margin-top: 15px;
-            padding: 16px;
-            border-radius: 14px;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            display: none;
-            width: 100%;
-            text-align: left;
-            font-size: 0.95rem;
-            backdrop-filter: blur(10px);
-        }
-
-        footer {
-            text-align: center;
-            padding: 25px;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            border-top: 1px solid var(--card-border);
-            background: var(--header-bg);
-        }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 1.8rem; }
-            .download-box { flex-direction: column; background: transparent; box-shadow: none; padding: 0; }
-            .download-box input { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; margin-bottom: 10px; padding: 16px; }
-            .download-box button { width: 100%; padding: 14px; justify-content: center; border-radius: 12px; }
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; align-items: center; }
+        header { width: 100%; background: var(--header-bg); border-bottom: 1px solid var(--card-border); padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: 700; font-size: 1.35rem; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+        main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; text-align: center; width: 100%; max-width: 650px; }
+        .hero-icon { font-size: 3.5rem; color: #ef4444; margin-bottom: 15px; }
+        h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 10px; }
+        p.subtitle { color: var(--text-muted); font-size: 1rem; margin-bottom: 30px; line-height: 1.5; }
+        .download-box { background: var(--card-bg); padding: 8px; border-radius: 16px; border: 1px solid var(--card-border); display: flex; width: 100%; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .download-box input { flex: 1; border: none; outline: none; padding: 14px 18px; font-size: 1rem; color: var(--text-main); background: transparent; }
+        .download-box button { background: var(--primary); color: white; border: none; padding: 0 24px; font-weight: 600; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .download-box button:hover { background: var(--primary-hover); }
+        .result-area { display: none; width: 100%; margin-top: 15px; background: var(--card-bg); border: 1px solid var(--card-border); padding: 20px; border-radius: 16px; text-align: center; }
+        .result-btn { display: inline-block; width: 100%; padding: 14px; background: #22c55e; color: white; text-align: center; text-decoration: none; font-weight: 600; border-radius: 12px; margin-top: 12px; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3); }
+        .result-btn:hover { background: #16a34a; }
+        footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--text-muted); border-top: 1px solid var(--card-border); width: 100%; background: var(--header-bg); }
     </style>
 </head>
 <body>
 
-    <div class="ambient-glow"></div>
-
     <header>
-        <a href="#" class="logo" onclick="return false;">
-            <i class="fa-solid fa-infinity"></i> MediaFlow Pro
-        </a>
-        <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" title="تغيير المظهر">
-            <i class="fa-solid fa-moon" id="themeIcon"></i>
-        </button>
+        <a href="#" class="logo"><i class="fa-solid fa-infinity"></i> MediaFlow Pro</a>
     </header>
 
     <main>
-        <div class="hero-icon">
-            <i class="fa-brands fa-youtube"></i>
-        </div>
-        <h1>Téléchargeur de vidéos YouTube</h1>
-        <p class="subtitle">Collez votre URL ci-dessous pour lancer le traitement intelligent en toute fluidité.</p>
+        <div class="hero-icon"><i class="fa-brands fa-youtube"></i></div>
+        <h1>تحميل فيديوهات اليوتيوب</h1>
+        <p class="subtitle">قم بلصق رابط الفيديو أدناه للحصول على زر التحميل المباشر على جهازك فوراً.</p>
 
         <div class="download-box">
             <input type="text" id="urlInput" placeholder="https://www.youtube.com/watch?v=...">
-            <button onclick="processDownload()">
-                <i class="fa-solid fa-download"></i> Traiter le lien
-            </button>
+            <button onclick="startDownload()"><i class="fa-solid fa-download"></i> تجهيز الرابط</button>
         </div>
 
-        <div class="status-box" id="statusBox">
-            <span id="statusText"><i class="fa-solid fa-circle-notch fa-spin" style="margin-left: 8px;"></i> En cours de traitement...</span>
+        <div class="result-area" id="resultArea">
+            <p style="color: var(--text-muted); margin-bottom: 10px; font-size: 0.95rem;">فيديو الخاص بك جاهز للتحميل المباشر:</p>
+            <a id="downloadBtn" href="#" target="_blank" class="result-btn"><i class="fa-solid fa-cloud-arrow-down"></i> اضغط هنا لتحميل الفيديو بجودة عالية</a>
         </div>
     </main>
 
     <footer>
-        <p>&copy; 2026 MediaFlow Pro & Aek_tech - Tous droits réservés.</p>
+        <p>&copy; 2026 Aek_tech - جميع الحقوق محفوظة</p>
     </footer>
 
     <script>
-        function processDownload() {
+        function startDownload() {
             const url = document.getElementById('urlInput').value.trim();
-            const statusBox = document.getElementById('statusBox');
-            const statusText = document.getElementById('statusText');
+            const resultArea = document.getElementById('resultArea');
+            const downloadBtn = document.getElementById('downloadBtn');
 
             if (!url) {
-                alert('Veuillez entrer une URL YouTube valide !');
+                alert('الرجاء إدخال رابط يوتيوب صحيح!');
                 return;
             }
 
-            statusBox.style.display = 'block';
-            statusText.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin" style="margin-left: 8px; color: var(--primary);"></i> Envoi de la requête au serveur cloud...`;
+            // استخراج معرف الفيديو من الرابط
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            const videoID = (match && match[2].length === 11) ? match[2] : null;
 
-            // محاكاة الاتصال بنجاح وتجهيز المعالجة
-            setTimeout(() => {
-                statusText.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #22c55e; margin-left: 8px;"></i> Requête reçue avec succès ! Le serveur traite votre vidéo.`;
-            }, 2000);
-        }
-
-        function toggleTheme() {
-            const html = document.documentElement;
-            const icon = document.getElementById('themeIcon');
-            if (html.getAttribute('data-theme') === 'dark') {
-                html.setAttribute('data-theme', 'light');
-                icon.className = 'fa-solid fa-sun';
-            } else {
-                html.setAttribute('data-theme', 'dark');
-                icon.className = 'fa-solid fa-moon';
+            if (!videoID) {
+                alert('الرابط المدخل غير صالح، تأكد من صحته!');
+                return;
             }
+
+            // توجيه ذكي وسريع للزائر لتحميل الفيديو مباشرة
+            downloadBtn.href = `https://www.y2mate.com/youtube/${videoID}`;
+            resultArea.style.display = 'block';
         }
     </script>
 </body>
