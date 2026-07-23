@@ -26,4 +26,4 @@ jobs:
         env:
           YOUTUBE_URL: 'https://www.youtube.com/watch?v=BaW_jenozKc'
         run: |
-          python downloader.py
+          python ./downloader.py
