@@ -1,15 +1,15 @@
-name: Run Python Downloader & Save Artifact
+name: YouTube Video Downloader & Builder
 
 on:
   workflow_dispatch:
     inputs:
       video_url:
-        description: 'YouTube Video URL'
+        description: 'رابط فيديو اليوتيوب المراد تحميله'
         required: true
         type: string
 
 jobs:
-  run-python:
+  download-video:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -25,7 +25,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install yt-dlp
 
-      - name: Create and Run Downloader Script
+      - name: Run Python Downloader Script
         env:
           YOUTUBE_URL: '${{ github.event.inputs.video_url }}'
         run: |
@@ -38,7 +38,7 @@ jobs:
               print("Error: YOUTUBE_URL is not set")
               exit(1)
 
-          print(f"Downloading: {url}")
+          print(f"Starting download for: {url}")
           ydl_opts = {
               'format': 'best',
               'outtmpl': 'downloads/%(title)s.%(ext)s',
@@ -56,8 +56,8 @@ jobs:
 
           python downloader.py
 
-      - name: Upload Downloaded Video
+      - name: Upload Downloaded Video Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: youtube-video
+          name: youtube-downloaded-video
           path: downloads/
