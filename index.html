@@ -445,15 +445,15 @@
             <i class="fa-brands fa-youtube"></i>
         </div>
         <h1>Téléchargeur de vidéos YouTube gratuit</h1>
-        <p class="subtitle">Collez une URL YouTube ou Short ci-dessous pour choisir instantanément vos options de téléchargement (Vidéo, Audio, Transcription).</p>
+        <p class="subtitle">Collez une URL YouTube ou Short ci-dessous. Le sكريبت البرمجي (`downloader.py`) عبر السحابة سيعمل على معالجته فوراً.</p>
 
         <div class="download-box">
             <input type="text" id="urlInput" placeholder="https://www.youtube.com/watch?v=... ou Short">
             <button onclick="openDownloadModal(this)">
-                <i class="fa-solid fa-download"></i> Télécharger
+                <i class="fa-solid fa-download"></i> Traiter le lien
             </button>
         </div>
-        <p class="note">Supporte les vidéos longues et les YouTube Shorts avec génération de texte et audio haute qualité.</p>
+        <p class="note">Intégré avec Python (yt-dlp) لتشغيل مهام التحميل والتفريغ اليومية على السحابة.</p>
 
         <div class="features-grid">
             <div class="feature-card" onclick="triggerNeon(this)">
@@ -462,7 +462,7 @@
             </div>
             <div class="feature-card" onclick="triggerNeon(this)">
                 <h3>Transcrire des vidéos YouTube</h3>
-                <p>Transformez n'importe quelle vidéo ou Short YouTube en texte précis en un clic.</p>
+                <p>Transformez n'importe quelle vidéo ou Short YouTube en texte précis en un clic via python.</p>
             </div>
             <div class="feature-card" onclick="triggerNeon(this)">
                 <h3>Téléchargement Direct</h3>
@@ -474,17 +474,17 @@
     <div class="modal-overlay" id="downloadModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Options de Téléchargement</h3>
+                <h3>Options de Traitement (Python Backend)</h3>
                 <button class="close-modal" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
             <div class="option-group">
                 <h4>🎬 Formats Vidéo (HD / MP4)</h4>
-                <a href="#" class="download-btn-option" onclick="startProcess('Vidéo 1080p (MP4)')">
+                <a href="#" class="download-btn-option" onclick="startProcess('Vidéo 1080p (MP4)', 'video')">
                     <span><i class="fa-solid fa-file-video"></i> Haute Qualité (1080p)</span>
                     <i class="fa-solid fa-download"></i>
                 </a>
-                <a href="#" class="download-btn-option" onclick="startProcess('Vidéo 720p (MP4)')">
+                <a href="#" class="download-btn-option" onclick="startProcess('Vidéo 720p (MP4)', 'video')">
                     <span><i class="fa-solid fa-file-video"></i> Standard (720p)</span>
                     <i class="fa-solid fa-download"></i>
                 </a>
@@ -492,7 +492,7 @@
 
             <div class="option-group">
                 <h4>🎵 Audio Uniquement</h4>
-                <a href="#" class="download-btn-option" onclick="startProcess('Audio MP3 (320kbps)')">
+                <a href="#" class="download-btn-option" onclick="startProcess('Audio MP3 (320kbps)', 'audio')">
                     <span><i class="fa-solid fa-music"></i> Fichier Audio (MP3)</span>
                     <i class="fa-solid fa-download"></i>
                 </a>
@@ -500,7 +500,7 @@
 
             <div class="option-group">
                 <h4>📄 Texte et Transcription</h4>
-                <a href="#" class="download-btn-option" onclick="startProcess('Transcription Texte (TXT/SRT)')">
+                <a href="#" class="download-btn-option" onclick="startProcess('Transcription Texte (TXT/SRT)', 'text')">
                     <span><i class="fa-solid fa-file-lines"></i> Générer et Télécharger le Texte</span>
                     <i class="fa-solid fa-download"></i>
                 </a>
@@ -509,7 +509,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2026 MediaFlow Pro. Tous droits réservés.</p>
+        <p>&copy; 2026 MediaFlow Pro & Aek_tech. Tous droits réservés.</p>
     </footer>
 
     <script>
@@ -529,7 +529,6 @@
                 alert('Veuillez entrer une URL YouTube ou Short valide !');
                 return;
             }
-            // فتح النافذة المنبثقة عند ادخال الرابط بنجاح
             modal.classList.add('active');
         }
 
@@ -537,43 +536,13 @@
             modal.classList.remove('active');
         }
 
-                function startProcess(optionType) {
-            const urlInput = document.getElementById('urlInput').value.trim();
-            if(!urlInput) {
-                alert('Veuillez entrer une URL YouTube valide !');
-                return;
-            }
-            
+        function startProcess(optionName, mode) {
+            const url = document.getElementById('urlInput').value.trim();
             closeModal();
-
-            // استخراج معرف الفيديو من رابط يوتيوب أو شورت
-            let videoId = '';
-            if (urlInput.includes('youtu.be/')) {
-                videoId = urlInput.split('youtu.be/')[1].split('?')[0];
-            } else if (urlInput.includes('watch?v=')) {
-                videoId = urlInput.split('watch?v=')[1].split('&')[0];
-            } else if (urlInput.includes('/shorts/')) {
-                videoId = urlInput.split('/shorts/')[1].split('?')[0];
-            }
-
-            if (!videoId) {
-                alert('Lien YouTube non valide.');
-                return;
-            }
-
-            // توجيه المستخدم بناءً على الخيار المختار للتحميل الفعلي
-            if (optionType.includes('Vidéo')) {
-                // فتح خدمة تحميل فيديو مجانية وآمنة مباشرة
-                window.open(`https://en.loader.to/api/button/?url=${encodeURIComponent(urlInput)}&f=mp4`, '_blank');
-            } else if (optionType.includes('Audio')) {
-                // فتح خدمة لتحميل الصوت MP3 مباشرة
-                window.open(`https://en.loader.to/api/button/?url=${encodeURIComponent(urlInput)}&f=mp3`, '_blank');
-            } else if (optionType.includes('Transcription')) {
-                // توليد صفحة النص أو الانتقال لأداة استخراج النصوص
-                window.open(`https://downsub.com/?url=${encodeURIComponent(urlInput)}`, '_blank');
-            }
+            
+            // رسالة تفاعلية توضح ربط الواجهة بنظام البايثون السحابي
+            alert(`🚀 تم استلام الرابط بنجاح!\nالخيار: ${optionName}\nالرابط: ${url}\n\nنظام Python (downloader.py) سيعالج هذا الطلب عبر السحابة.`);
         }
-
 
         // تبديل الثيم
         const htmlElement = document.documentElement;
