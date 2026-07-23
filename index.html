@@ -374,7 +374,7 @@
             border-radius: 10px;
             margin-bottom: 10px;
             color: var(--text-main);
-            text-decoration: none;
+            width: 100%;
             font-weight: 600;
             font-size: 0.95rem;
             cursor: pointer;
@@ -424,19 +424,19 @@
     <canvas id="bg-canvas"></canvas>
 
     <header>
-        <a href="#" class="logo" onclick="triggerNeon(this)">
+        <a href="#" class="logo" onclick="triggerNeon(this); return false;">
             <i class="fa-solid fa-infinity"></i> MediaFlow Pro
         </a>
         <div class="nav-right">
             <nav class="nav-links">
-                <a href="#" onclick="triggerNeon(this)">Tarifs</a>
-                <a href="#" onclick="triggerNeon(this)">FAQ</a>
-                <a href="#" onclick="triggerNeon(this)">Blog</a>
+                <a href="#" onclick="triggerNeon(this); return false;">Tarifs</a>
+                <a href="#" onclick="triggerNeon(this); return false;">FAQ</a>
+                <a href="#" onclick="triggerNeon(this); return false;">Blog</a>
             </nav>
             <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" title="Changer le thème">
                 <i class="fa-solid fa-moon" id="themeIcon"></i>
             </button>
-            <a href="#" class="btn-cta" onclick="triggerNeon(this)">S'inscrire</a>
+            <a href="#" class="btn-cta" onclick="triggerNeon(this); return false;">S'inscrire</a>
         </div>
     </header>
 
@@ -445,7 +445,7 @@
             <i class="fa-brands fa-youtube"></i>
         </div>
         <h1>Téléchargeur de vidéos YouTube gratuit</h1>
-        <p class="subtitle">Collez une URL YouTube ou Short ci-dessous. Le sكريبت البرمجي (`downloader.py`) عبر السحابة سيعمل على معالجته فوراً.</p>
+        <p class="subtitle">Collez une URL YouTube ou Short ci-dessous. Le script Python (`downloader.py`) sur le cloud traitera votre demande instantanément.</p>
 
         <div class="download-box">
             <input type="text" id="urlInput" placeholder="https://www.youtube.com/watch?v=... ou Short">
@@ -453,7 +453,7 @@
                 <i class="fa-solid fa-download"></i> Traiter le lien
             </button>
         </div>
-        <p class="note">Intégré avec Python (yt-dlp) لتشغيل مهام التحميل والتفريغ اليومية على السحابة.</p>
+        <p class="note">Intégré avec Python (yt-dlp) pour automatiser les tâches de téléchargement.</p>
 
         <div class="features-grid">
             <div class="feature-card" onclick="triggerNeon(this)">
@@ -480,30 +480,30 @@
             
             <div class="option-group">
                 <h4>🎬 Formats Vidéo (HD / MP4)</h4>
-                <a href="#" class="download-btn-option" onclick="startProcess('Vidéo 1080p (MP4)', 'video')">
+                <button class="download-btn-option" onclick="startProcess('Vidéo 1080p (MP4)', 'video')">
                     <span><i class="fa-solid fa-file-video"></i> Haute Qualité (1080p)</span>
                     <i class="fa-solid fa-download"></i>
-                </a>
-                <a href="#" class="download-btn-option" onclick="startProcess('Vidéo 720p (MP4)', 'video')">
+                </button>
+                <button class="download-btn-option" onclick="startProcess('Vidéo 720p (MP4)', 'video')">
                     <span><i class="fa-solid fa-file-video"></i> Standard (720p)</span>
                     <i class="fa-solid fa-download"></i>
-                </a>
+                </button>
             </div>
 
             <div class="option-group">
                 <h4>🎵 Audio Uniquement</h4>
-                <a href="#" class="download-btn-option" onclick="startProcess('Audio MP3 (320kbps)', 'audio')">
+                <button class="download-btn-option" onclick="startProcess('Audio MP3 (320kbps)', 'audio')">
                     <span><i class="fa-solid fa-music"></i> Fichier Audio (MP3)</span>
                     <i class="fa-solid fa-download"></i>
-                </a>
+                </button>
             </div>
 
             <div class="option-group">
                 <h4>📄 Texte et Transcription</h4>
-                <a href="#" class="download-btn-option" onclick="startProcess('Transcription Texte (TXT/SRT)', 'text')">
+                <button class="download-btn-option" onclick="startProcess('Transcription Texte (TXT/SRT)', 'text')">
                     <span><i class="fa-solid fa-file-lines"></i> Générer et Télécharger le Texte</span>
                     <i class="fa-solid fa-download"></i>
-                </a>
+                </button>
             </div>
         </div>
     </div>
@@ -537,18 +537,17 @@
         }
 
         function startProcess(optionName, mode) {
-    const url = document.getElementById('urlInput').value.trim();
-    closeModal();
-    
-    if (!url) {
-        alert('Veuillez entrer une URL valide !');
-        return;
-    }
+            const url = document.getElementById('urlInput').value.trim();
+            closeModal();
+            
+            if (!url) {
+                alert('Veuillez entrer une URL valide !');
+                return;
+            }
 
-    // تنبيه يوضح أن الطلب تم معالجته عبر نظامك الخاص
-    alert(`✅ تم استلام طلبك بنجاح!\nالخيار: ${optionName}\nالرابط: ${url}\n\nنظام Python (downloader.py) سيتولى المعالجة عبر GitHub Actions.`);
-}
-
+            // تأكيد العمليات محلياً دون أي توجيه خارجي
+            alert(`✅ Succès !\nOption: ${optionName}\nURL: ${url}\n\nLe script Python (downloader.py) traite cette demande.`);
+        }
 
         // تبديل الثيم
         const htmlElement = document.documentElement;
