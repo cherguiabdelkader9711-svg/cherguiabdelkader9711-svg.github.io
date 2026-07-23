@@ -537,12 +537,43 @@
             modal.classList.remove('active');
         }
 
-        function startProcess(optionName) {
-            const url = document.getElementById('urlInput').value.trim();
+                function startProcess(optionType) {
+            const urlInput = document.getElementById('urlInput').value.trim();
+            if(!urlInput) {
+                alert('Veuillez entrer une URL YouTube valide !');
+                return;
+            }
+            
             closeModal();
-            // إظهار تنبيه بدء التحميل الفعلي حسب الخيار المختار
-            alert(`Préparation du fichier (${optionName}) pour l'URL :\n${url}\n\nLe téléchargement va démarrer...`);
+
+            // استخراج معرف الفيديو من رابط يوتيوب أو شورت
+            let videoId = '';
+            if (urlInput.includes('youtu.be/')) {
+                videoId = urlInput.split('youtu.be/')[1].split('?')[0];
+            } else if (urlInput.includes('watch?v=')) {
+                videoId = urlInput.split('watch?v=')[1].split('&')[0];
+            } else if (urlInput.includes('/shorts/')) {
+                videoId = urlInput.split('/shorts/')[1].split('?')[0];
+            }
+
+            if (!videoId) {
+                alert('Lien YouTube non valide.');
+                return;
+            }
+
+            // توجيه المستخدم بناءً على الخيار المختار للتحميل الفعلي
+            if (optionType.includes('Vidéo')) {
+                // فتح خدمة تحميل فيديو مجانية وآمنة مباشرة
+                window.open(`https://en.loader.to/api/button/?url=${encodeURIComponent(urlInput)}&f=mp4`, '_blank');
+            } else if (optionType.includes('Audio')) {
+                // فتح خدمة لتحميل الصوت MP3 مباشرة
+                window.open(`https://en.loader.to/api/button/?url=${encodeURIComponent(urlInput)}&f=mp3`, '_blank');
+            } else if (optionType.includes('Transcription')) {
+                // توليد صفحة النص أو الانتقال لأداة استخراج النصوص
+                window.open(`https://downsub.com/?url=${encodeURIComponent(urlInput)}`, '_blank');
+            }
         }
+
 
         // تبديل الثيم
         const htmlElement = document.documentElement;
