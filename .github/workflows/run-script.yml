@@ -23,7 +23,6 @@ jobs:
           pip install yt-dlp
 
       - name: Run Downloader Script
-        working-directory: ./cherguiabdelkader9711-svg.github.io
         env:
           YOUTUBE_URL: 'https://www.youtube.com/watch?v=BaW_jenozKc'
         run: |
