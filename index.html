@@ -1,99 +1,85 @@
-<!DOCTYPE html>
-<html lang="fr" dir="ltr" data-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MediaFlow Pro - Téléchargeur Rapide</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-     
-    <style>
-        :root {
-            --bg-color: #030712;
-            --text-main: #f9fafb;
-            --text-muted: #9ca3af;
-            --card-bg: rgba(17, 24, 39, 0.75);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --primary: #3b82f6;
-            --primary-hover: #2563eb;
-            --header-bg: rgba(3, 7, 18, 0.8);
-        }
+package main
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; align-items: center; }
-        header { width: 100%; background: var(--header-bg); border-bottom: 1px solid var(--card-border); padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-weight: 700; font-size: 1.35rem; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 10px; }
-        main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; text-align: center; width: 100%; max-width: 650px; }
-        .hero-icon { font-size: 3.5rem; color: #ef4444; margin-bottom: 15px; }
-        h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 10px; }
-        p.subtitle { color: var(--text-muted); font-size: 1rem; margin-bottom: 30px; line-height: 1.5; }
-        .download-box { background: var(--card-bg); padding: 8px; border-radius: 16px; border: 1px solid var(--card-border); display: flex; width: 100%; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
-        .download-box input { flex: 1; border: none; outline: none; padding: 14px 18px; font-size: 1rem; color: var(--text-main); background: transparent; }
-        .download-box button { background: var(--primary); color: white; border: none; padding: 0 24px; font-weight: 600; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
-        .download-box button:hover { background: var(--primary-hover); }
-        .result-area { display: none; width: 100%; margin-top: 15px; background: var(--card-bg); border: 1px solid var(--card-border); padding: 20px; border-radius: 16px; text-align: center; }
-        .result-btn { display: inline-block; width: 100%; padding: 14px; background: #22c55e; color: white; text-align: center; text-decoration: none; font-weight: 600; border-radius: 12px; margin-top: 12px; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3); }
-        .result-btn:hover { background: #16a34a; }
-        footer { text-align: center; padding: 20px; font-size: 0.85rem; color: var(--text-muted); border-top: 1px solid var(--card-border); width: 100%; background: var(--header-bg); }
-    </style>
-</head>
-<body>
+import (
+	"fmt"
+	"io"
+	"net/http"
+	"os"
 
-    <header>
-        <a href="#" class="logo"><i class="fa-solid fa-infinity"></i> MediaFlow Pro</a>
-    </header>
+	"github.com/kkdai/youtube/v2"
+)
 
-    <main>
-        <div class="hero-icon"><i class="fa-brands fa-youtube"></i></div>
-        <h1>تحميل فيديوهات اليوتيوب</h1>
-        <p class="subtitle">قم بلصق رابط الفيديو أدناه للحصول على زر التحميل المباشر على جهازك فوراً.</p>
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+	html := `
+	<!DOCTYPE html>
+	<html lang="ar" dir="rtl">
+	<head>
+	    <meta charset="UTF-8">
+	    <title>موقع تحميل فيديوهات يوتيوب</title>
+	    <style>
+	        body { font-family: Tahoma, sans-serif; background: #0f172a; color: #fff; text-align: center; padding-top: 50px; }
+	        input { width: 60%; padding: 12px; font-size: 16px; border-radius: 5px; border: none; outline: none; }
+	        button { padding: 12px 25px; font-size: 16px; background: #22c55e; color: #white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+	        button:hover { background: #16a34a; }
+	        .container { background: #1e293b; padding: 40px; border-radius: 10px; display: inline-block; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+	    </style>
+	</head>
+	<body>
+	    <div class="container">
+	        <h2>محمل فيديوهات يوتيوب الذكي (Go)</h2>
+	        <form action="/download" method="GET">
+	            <input type="text" name="url" placeholder="أدخل رابط فيديو يوتيوب هنا..." required>
+	            <br><br>
+	            <button type="submit">تحميل الفيديو</button>
+	        </form>
+	    </div>
+	</body>
+	</html>
+	`
+	fmt.Fprint(w, html)
+}
 
-        <div class="download-box">
-            <input type="text" id="urlInput" placeholder="https://www.youtube.com/watch?v=...">
-            <button onclick="startDownload()"><i class="fa-solid fa-download"></i> تجهيز الرابط</button>
-        </div>
+func downloadHandler(w http.ResponseWriter, r *http.Request) {
+	videoURL := r.URL.Query().Get("url")
+	if videoURL == "" {
+		http.Error(w, "الرجاء إدخال رابط الفيديو", http.StatusBadRequest)
+		return
+	}
 
-        <div class="result-area" id="resultArea">
-            <p style="color: var(--text-muted); margin-bottom: 10px; font-size: 0.95rem;">فيديو الخاص بك جاهز للتحميل المباشر:</p>
-            <a id="downloadBtn" href="#" target="_blank" class="result-btn"><i class="fa-solid fa-cloud-arrow-down"></i> اضغط هنا لتحميل الفيديو بجودة عالية</a>
-        </div>
-    </main>
+	client := youtube.Client{}
+	video, err := client.GetVideo(videoURL)
+	if err != nil {
+		http.Error(w, "فشل في جلب بيانات الفيديو: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-    <footer>
-        <p>&copy; 2026 Aek_tech - جميع الحقوق محفوظة</p>
-    </footer>
+	// اختيار أعلى دقة متاحة تحتوي على فيديو وصوت مدمج أو صيغة قياسية
+	format := &video.Formats[0]
+	stream, size, err := client.GetStream(video, format)
+	if err != nil {
+		http.Error(w, "فشل في بدء التحميل: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer stream.Close()
 
-    <script>
-    function startDownload() {
-        const url = document.getElementById('urlInput').value.trim();
-        const resultArea = document.getElementById('resultArea');
-        const downloadBtn = document.getElementById('downloadBtn');
+	// إعداد الهيدر ليدر المتصفح بتحميل الملف مباشرة بجهاز المستخدم
+	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s.mp4\"", video.Title))
+	w.Header().Set("Content-Type", "video/mp4")
+	w.Header().Set("Content-Length", fmt.Sprintf("%d", size))
 
-        if (!url) {
-            alert('الرجاء إدخال رابط يوتيوب صحيح!');
-            return;
-        }
+	// نقل الدفق مباشرة إلى متصفح المستخدم
+	_, _ = io.Copy(w, stream)
+}
 
-        // دالة ذكية وشاملة لاستخراج معرف الفيديو من أي شكل رابط يوتيوب
-        let videoID = '';
-        if (url.includes('youtu.be/')) {
-            videoID = url.split('youtu.be/')[1]?.split('?')[0];
-        } else if (url.includes('watch?v=')) {
-            videoID = url.split('watch?v=')[1]?.split('&')[0];
-        } else if (url.includes('shorts/')) {
-            videoID = url.split('shorts/')[1]?.split('?')[0];
-        }
+func main() {
+	http.HandleFunc("/", homeHandler)
+	http.HandleFunc("/download", downloadHandler)
 
-        if (!videoID || videoID.length !== 11) {
-            alert('الرابط المدخل غير صالح، تأكد من نسخه بشكل صحيح!');
-            return;
-        }
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 
-        // ربط الزر بالخدمة المباشرة مع المعرف المستخرج بدقة
-        downloadBtn.href = `https://www.y2mate.com/youtube/${videoID}`;
-        resultArea.style.display = 'block';
-    }
-</script>
-
-</body>
-</html>
+	fmt.Println("Server is running on port " + port)
+	http.ListenAndServe(":"+port, nil)
+}
