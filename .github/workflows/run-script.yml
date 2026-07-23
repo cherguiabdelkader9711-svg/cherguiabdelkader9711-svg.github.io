@@ -2,9 +2,8 @@ name: Run Python Script Daily
 
 on:
   schedule:
-    # يتم تشغيل السكريبت تلقائياً كل يوم الساعة 12 منتصف الليل بتوقيت UTC
     - cron: '0 0 * * *'
-  workflow_dispatch: # تيح لك تشغيله يدوياً متى شئت من تبويب Actions
+  workflow_dispatch:
 
 jobs:
   run-python:
@@ -24,8 +23,8 @@ jobs:
           pip install yt-dlp
 
       - name: Run Downloader Script
+        working-directory: .
         env:
-          # يمكنك وضع رابط يوتيوب افتراضي هنا ليتم تحميله تلقائياً أثناء التشغيل السحابي
           YOUTUBE_URL: 'https://www.youtube.com/watch?v=BaW_jenozKc'
         run: |
           python downloader.py
