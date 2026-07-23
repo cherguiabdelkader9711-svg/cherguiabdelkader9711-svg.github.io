@@ -537,12 +537,18 @@
         }
 
         function startProcess(optionName, mode) {
-            const url = document.getElementById('urlInput').value.trim();
-            closeModal();
-            
-            // رسالة تفاعلية توضح ربط الواجهة بنظام البايثون السحابي
-            alert(`🚀 تم استلام الرابط بنجاح!\nالخيار: ${optionName}\nالرابط: ${url}\n\nنظام Python (downloader.py) سيعالج هذا الطلب عبر السحابة.`);
-        }
+    const url = document.getElementById('urlInput').value.trim();
+    closeModal();
+    
+    if (!url) {
+        alert('Veuillez entrer une URL valide !');
+        return;
+    }
+
+    // تنبيه يوضح أن الطلب تم معالجته عبر نظامك الخاص
+    alert(`✅ تم استلام طلبك بنجاح!\nالخيار: ${optionName}\nالرابط: ${url}\n\nنظام Python (downloader.py) سيتولى المعالجة عبر GitHub Actions.`);
+}
+
 
         // تبديل الثيم
         const htmlElement = document.documentElement;
