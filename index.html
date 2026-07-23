@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Téléchargeur de vidéos YouTube Gratuit</title>
+    <!-- استخدام خط عصري -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* شريط التنقل العلوي */
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .btn-cta {
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .btn-cta:hover {
+            background: var(--primary-hover);
+        }
+
+        /* المحتوى الرئيسي */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .hero-icon {
+            font-size: 3rem;
+            color: #ef4444;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #0f172a;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        /* صندوق الإدخال (الابداع الجمالي) */
+        .download-box {
+            background: #ffffff;
+            padding: 8px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            width: 100%;
+            max-width: 650px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 15px;
+        }
+
+        .download-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 14px 16px;
+            font-size: 1rem;
+            color: var(--text-main);
+            background: transparent;
+        }
+
+        .download-box button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 24px;
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .download-box button:hover {
+            background: var(--primary-hover);
+        }
+
+        .note {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            max-width: 500px;
+            line-height: 1.4;
+        }
+
+        /* البطاقات السفلية */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 60px;
+            padding: 0 20px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .feature-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* التذييل */
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-top: 1px solid #e2e8f0;
+            background: #ffffff;
+        }
+
+        @media (max-width: 768px) {
+            .download-box {
+                flex-direction: column;
+                background: transparent;
+                box-init: none;
+                box-shadow: none;
+                border: none;
+                gap: 10px;
+            }
+            .download-box input {
+                background: #fff;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+            }
+            .download-box button {
+                padding: 14px;
+                justify-content: center;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الهيدر -->
+    <header>
+        <a href="#" class="logo">
+            <i class="fa-solid fa-infinity"></i> MediaFlow
+        </a>
+        <div class="nav-links">
+            <a href="#">Tarifs</a>
+            <a href="#">FAQ</a>
+            <a href="#">Blog</a>
+            <a href="#" class="btn-cta">S'inscrire</a>
+        </div>
+    </header>
+
+    <!-- المحتوى البارز -->
+    <main>
+        <div class="hero-icon">
+            <i class="fa-brands fa-youtube"></i>
+        </div>
+        <h1>Téléchargeur de vidéos YouTube gratuit</h1>
+        <p class="subtitle">Gratuit, rapide et sans publicités. Collez une URL YouTube pour télécharger instantanément.</p>
+
+        <!-- حقل الادخال -->
+        <div class="download-box">
+            <input type="text" id="urlInput" placeholder="https://www.youtube.com/watch?v=...">
+            <button onclick="handleDownload()">
+                <i class="fa-solid fa-download"></i> Télécharger
+            </button>
+        </div>
+        <p class="note">Assurez-vous de ne pas violer les droits d'autrui avec les fichiers que vous téléchargez. La musique protégée par des droits d'auteur ne peut pas être téléchargée avec cet outil.</p>
+
+        <!-- شبكة الخدمات التحتية -->
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>Convertir des fichiers audio en texte</h3>
+                <p>Téléversez MP3, MP4, WAV, MOV. Téléchargez DOCX, TXT, SRT (sous-titres).</p>
+            </div>
+            <div class="feature-card" style="border-top: 3px solid #ef4444;">
+                <h3>Transcrire des vidéos YouTube</h3>
+                <p>Convertissez des vidéos YouTube en texte précis ou en sous-titres. Il suffit de coller le lien YouTube.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Transcription audio et vidéo gratuite</h3>
+                <p>Convertissez des vidéos en texte en quelques secondes. 3 transcriptions gratuites chaque jour.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- الفوتر -->
+    <footer>
+        <p>&copy; 2026 MediaFlow. Propulsé par GitHub Pages. Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        function handleDownload() {
+            const url = document.getElementById('urlInput').value;
+            if(!url) {
+                alert('Veuillez entrer une URL YouTube valide !');
+                return;
+            }
+            alert('Traitement de la vidéo : ' + url);
+            // يمكنك ربط هذا الزر بـ API خارجي مجاني لتحميل الفيديو لاحقاً
+        }
+    </script>
+</body>
+</html>
