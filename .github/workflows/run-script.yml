@@ -4,8 +4,8 @@ on:
   schedule:
     # يتم تشغيل السكريبت تلقائياً كل يوم الساعة 12 منتصف الليل بتوقيت UTC
     - cron: '0 0 * * *'
-  workflow_dispatch: # يتيح لك تشغيله يدويأً متى شئت من زر Actions
- 
+  workflow_dispatch: # تيح لك تشغيله يدوياً متى شئت من تبويب Actions
+
 jobs:
   run-python:
     runs-on: ubuntu-latest
@@ -23,7 +23,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install yt-dlp
 
-            - name: Run Downloader Script
+      - name: Run Downloader Script
+        env:
+          # يمكنك وضع رابط يوتيوب افتراضي هنا ليتم تحميله تلقائياً أثناء التشغيل السحابي
+          YOUTUBE_URL: 'https://www.youtube.com/watch?v=BaW_jenozKc'
         run: |
           python downloader.py
-
