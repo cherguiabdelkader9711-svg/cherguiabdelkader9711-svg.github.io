@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MediaFlow Pro1 - Téléchargeur YouTube Avancé</title>
+    <title>MediaFlow Pro - Téléchargeur YouTube Avancé</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
      
@@ -12,31 +12,33 @@
             --transition-speed: 0.4s;
         }
 
+        /* الثيم الداكن (Dark Theme) */
         [data-theme="dark"] {
-            --bg-color: #050505;
-            --text-main: #ffffff;
-            --text-muted: #a1a1aa;
-            --card-bg: rgba(18, 18, 18, 0.85);
-            --card-border: rgba(255, 255, 255, 0.12);
+            --bg-color: #030712;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --card-bg: rgba(17, 24, 39, 0.75);
+            --card-border: rgba(255, 255, 255, 0.08);
             --primary: #3b82f6;
             --primary-hover: #2563eb;
-            --neon-glow: rgba(59, 130, 246, 0.6);
-            --input-bg: rgba(255, 255, 255, 0.05);
-            --header-bg: rgba(5, 5, 5, 0.8);
-            --modal-bg: rgba(15, 15, 15, 0.95);
+            --neon-glow: rgba(59, 130, 246, 0.4);
+            --input-bg: rgba(255, 255, 255, 0.03);
+            --header-bg: rgba(3, 7, 18, 0.8);
+            --modal-bg: rgba(17, 24, 39, 0.95);
         }
 
+        /* الثيم الفاتح (Light Theme) */
         [data-theme="light"] {
-            --bg-color: #f0fdf4;
+            --bg-color: #f8fafc;
             --text-main: #0f172a;
-            --text-muted: #475569;
-            --card-bg: rgba(255, 255, 255, 0.9);
-            --card-border: rgba(34, 197, 94, 0.2);
-            --primary: #10b981;
-            --primary-hover: #059669;
-            --neon-glow: rgba(16, 185, 129, 0.6);
-            --input-bg: rgba(0, 0, 0, 0.03);
-            --header-bg: rgba(255, 255, 255, 0.8);
+            --text-muted: #64748b;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --card-border: rgba(0, 0, 0, 0.08);
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --neon-glow: rgba(37, 99, 235, 0.3);
+            --input-bg: rgba(0, 0, 0, 0.02);
+            --header-bg: rgba(248, 250, 252, 0.8);
             --modal-bg: rgba(255, 255, 255, 0.98);
         }
 
@@ -45,7 +47,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Inter', sans-serif;
-            transition: background-color var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed);
+            transition: background-color var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed), box-shadow var(--transition-speed);
         }
 
         body {
@@ -59,21 +61,27 @@
             position: relative;
         }
 
-        #bg-canvas {
+        /* خلفية جمالية متحركة خفيفة */
+        .ambient-glow {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: -20vh;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 350px;
+            background: var(--primary);
+            filter: blur(120px);
+            opacity: 0.15;
             z-index: -1;
             pointer-events: none;
         }
 
         header {
             background: var(--header-bg);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--card-border);
-            padding: 15px 40px;
+            padding: 18px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -87,29 +95,10 @@
             align-items: center;
             gap: 10px;
             font-weight: 700;
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             color: var(--primary);
             text-decoration: none;
-            text-shadow: 0 0 10px var(--neon-glow);
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-muted);
-            font-weight: 500;
-            font-size: 0.95rem;
+            text-shadow: 0 0 20px var(--neon-glow);
         }
 
         .theme-toggle {
@@ -123,6 +112,12 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            border-color: var(--primary);
         }
 
         main {
@@ -131,42 +126,54 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 50px 20px;
+            padding: 40px 20px;
             text-align: center;
             z-index: 2;
         }
 
         .hero-icon {
-            font-size: 3.5rem;
+            font-size: 3.8rem;
             color: #ef4444;
             margin-bottom: 15px;
+            filter: drop-shadow(0 4px 12px rgba(239, 68, 68, 0.3));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
         }
 
         h1 {
-            font-size: 2.8rem;
+            font-size: 2.5rem;
             font-weight: 800;
             margin-bottom: 12px;
+            letter-spacing: -0.5px;
         }
 
         p.subtitle {
             color: var(--text-muted);
             font-size: 1.05rem;
             margin-bottom: 35px;
-            max-width: 650px;
+            max-width: 600px;
             line-height: 1.6;
         }
 
+        /* صندوق إدخال الرابط الجمالي */
         .download-box {
             background: var(--card-bg);
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
             padding: 8px;
-            border-radius: 14px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15), 0 0 0 1px var(--card-border);
             display: flex;
             width: 100%;
-            max-width: 680px;
-            border: 1px solid var(--card-border);
+            max-width: 650px;
             margin-bottom: 15px;
+        }
+
+        .download-box:focus-within {
+            box-shadow: 0 0 0 2px var(--primary), 0 15px 35px rgba(0, 0, 0, 0.2);
         }
 
         .download-box input {
@@ -179,28 +186,40 @@
             background: transparent;
         }
 
+        .download-box input::placeholder {
+            color: var(--text-muted);
+            opacity: 0.7;
+        }
+
         .download-box button {
             background: var(--primary);
             color: white;
             border: none;
             padding: 0 26px;
             font-weight: 600;
-            font-size: 1rem;
-            border-radius: 10px;
+            font-size: 0.95rem;
+            border-radius: 12px;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 8px;
+            box-shadow: 0 4px 15px var(--neon-glow);
         }
 
+        .download-box button:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        /* نافذة الخيارات (Modal) المنبثقة */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -219,38 +238,49 @@
             background: var(--modal-bg);
             border: 1px solid var(--card-border);
             padding: 30px;
-            border-radius: 20px;
+            border-radius: 24px;
             width: 90%;
-            max-width: 500px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            max-width: 480px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
             text-align: left;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
             border-bottom: 1px solid var(--card-border);
-            padding-bottom: 12px;
+            padding-bottom: 14px;
+        }
+
+        .modal-header h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
         }
 
         .close-modal {
-            background: none;
-            border: none;
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
             color: var(--text-muted);
-            font-size: 1.3rem;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
         }
 
-        .option-group {
-            margin-bottom: 20px;
-        }
-
-        .option-group h4 {
-            font-size: 0.95rem;
-            margin-bottom: 10px;
-            color: var(--text-muted);
+        .close-modal:hover {
+            color: var(--text-main);
+            background: var(--card-border);
         }
 
         .download-btn-option {
@@ -259,9 +289,9 @@
             justify-content: space-between;
             background: var(--input-bg);
             border: 1px solid var(--card-border);
-            padding: 12px 18px;
-            border-radius: 10px;
-            margin-bottom: 10px;
+            padding: 14px 18px;
+            border-radius: 14px;
+            margin-bottom: 12px;
             color: var(--text-main);
             width: 100%;
             font-weight: 600;
@@ -272,39 +302,47 @@
         .download-btn-option:hover {
             background: var(--primary);
             color: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px var(--neon-glow);
+            transform: translateX(4px);
         }
 
         footer {
             text-align: center;
             padding: 25px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
             border-top: 1px solid var(--card-border);
             background: var(--header-bg);
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .download-box { flex-direction: column; background: transparent; box-shadow: none; padding: 0; }
+            .download-box input { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; margin-bottom: 10px; padding: 16px; }
+            .download-box button { width: 100%; padding: 14px; justify-content: center; border-radius: 12px; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="bg-canvas"></canvas>
+    <div class="ambient-glow"></div>
 
     <header>
         <a href="#" class="logo" onclick="return false;">
-            <i class="fa-solid fa-infinity"></i> MediaFlow Pro 1
+            <i class="fa-solid fa-infinity"></i> MediaFlow Pro
         </a>
-        <div class="nav-right">
-            <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">
-                <i class="fa-solid fa-moon" id="themeIcon"></i>
-            </button>
-        </div>
+        <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" title="تغيير المظهر">
+            <i class="fa-solid fa-moon" id="themeIcon"></i>
+        </button>
     </header>
 
     <main>
         <div class="hero-icon">
             <i class="fa-brands fa-youtube"></i>
         </div>
-        <h1>Téléchargeur de vidéos 2 YouTube</h1>
-        <p class="subtitle">Collez votre URL ci-dessous pour lancer le traitement local via Python.</p>
+        <h1>Téléchargeur de vidéos YouTube</h1>
+        <p class="subtitle">Collez votre URL ci-dessous pour lancer le traitement en toute fluidité.</p>
 
         <div class="download-box">
             <input type="text" id="urlInput" placeholder="https://www.youtube.com/watch?v=...">
@@ -324,18 +362,18 @@
             <div class="option-group">
                 <button class="download-btn-option" onclick="startProcess('Vidéo 1080p')">
                     <span><i class="fa-solid fa-file-video"></i> Vidéo 1080p (MP4)</span>
-                    <i class="fa-solid fa-download"></i>
+                    <i class="fa-solid fa-arrow-right"></i>
                 </button>
                 <button class="download-btn-option" onclick="startProcess('Audio MP3')">
                     <span><i class="fa-solid fa-music"></i> Audio MP3</span>
-                    <i class="fa-solid fa-download"></i>
+                    <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </div>
         </div>
     </div>
 
     <footer>
-        <p>&copy; 2026 MediaFlow Pro &  1Aek_tech</p>
+        <p>&copy; 2026 MediaFlow Pro & Aek_tech - Tous droits réservés.</p>
     </footer>
 
     <script>
@@ -357,7 +395,7 @@
         function startProcess(optionName) {
             const url = document.getElementById('urlInput').value.trim();
             closeModal();
-            alert(`✅ Option sélectionnée : ${optionName}\n🔗 Lien : ${url}\n\nLe script Python (downloader.py) va traiter cette demande.`);
+            alert(`✅ Option sélectionnée : ${optionName}\n🔗 Lien : ${url}\n\nLe traitement est prêt.`);
         }
 
         function toggleTheme() {
