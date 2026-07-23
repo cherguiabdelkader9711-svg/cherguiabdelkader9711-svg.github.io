@@ -64,30 +64,36 @@
     </footer>
 
     <script>
-        function startDownload() {
-            const url = document.getElementById('urlInput').value.trim();
-            const resultArea = document.getElementById('resultArea');
-            const downloadBtn = document.getElementById('downloadBtn');
+    function startDownload() {
+        const url = document.getElementById('urlInput').value.trim();
+        const resultArea = document.getElementById('resultArea');
+        const downloadBtn = document.getElementById('downloadBtn');
 
-            if (!url) {
-                alert('الرجاء إدخال رابط يوتيوب صحيح!');
-                return;
-            }
-
-            // استخراج معرف الفيديو من الرابط
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            const match = url.match(regExp);
-            const videoID = (match && match[2].length === 11) ? match[2] : null;
-
-            if (!videoID) {
-                alert('الرابط المدخل غير صالح، تأكد من صحته!');
-                return;
-            }
-
-            // توجيه ذكي وسريع للزائر لتحميل الفيديو مباشرة
-            downloadBtn.href = `https://www.y2mate.com/youtube/${videoID}`;
-            resultArea.style.display = 'block';
+        if (!url) {
+            alert('الرجاء إدخال رابط يوتيوب صحيح!');
+            return;
         }
-    </script>
+
+        // دالة ذكية وشاملة لاستخراج معرف الفيديو من أي شكل رابط يوتيوب
+        let videoID = '';
+        if (url.includes('youtu.be/')) {
+            videoID = url.split('youtu.be/')[1]?.split('?')[0];
+        } else if (url.includes('watch?v=')) {
+            videoID = url.split('watch?v=')[1]?.split('&')[0];
+        } else if (url.includes('shorts/')) {
+            videoID = url.split('shorts/')[1]?.split('?')[0];
+        }
+
+        if (!videoID || videoID.length !== 11) {
+            alert('الرابط المدخل غير صالح، تأكد من نسخه بشكل صحيح!');
+            return;
+        }
+
+        // ربط الزر بالخدمة المباشرة مع المعرف المستخرج بدقة
+        downloadBtn.href = `https://www.y2mate.com/youtube/${videoID}`;
+        resultArea.style.display = 'block';
+    }
+</script>
+
 </body>
 </html>
