@@ -1,5 +1,5 @@
 name: Run Python Script Daily
- 
+
 on:
   schedule:
     - cron: '0 0 * * *'
@@ -26,4 +26,6 @@ jobs:
         env:
           YOUTUBE_URL: 'https://www.youtube.com/watch?v=BaW_jenozKc'
         run: |
+          # الدخول للمجلد الفرعي للمستودع وتثبيت المسار الصحيح
+          cd cherguiabdelkader9711-svg.github.io
           python downloader.py
