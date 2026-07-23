@@ -1,0 +1,11 @@
+⁠services:
+  - type: web
+    name: video-downloader-go
+    env: go
+    region: frankfurt
+    plan: free
+    buildCommand: go build -o main .
+    startCommand: ./main
+    envVars:
+      - key: PORT
+        value: 10000
