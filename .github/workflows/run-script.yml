@@ -5,7 +5,7 @@ on:
     # يتم تشغيل السكريبت تلقائياً كل يوم الساعة 12 منتصف الليل بتوقيت UTC
     - cron: '0 0 * * *'
   workflow_dispatch: # يتيح لك تشغيله يدويأً متى شئت من زر Actions
-
+ 
 jobs:
   run-python:
     runs-on: ubuntu-latest
