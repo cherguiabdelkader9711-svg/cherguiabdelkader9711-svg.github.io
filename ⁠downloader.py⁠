@@ -2,19 +2,20 @@ import os
 from yt_dlp import YoutubeDL
 
 def download_youtube(url, mode='video'):
+    # تحديد مسار مجلد التحميلات في جذر المشروع تلقائياً
     download_dir = os.path.join(os.getcwd(), 'downloads')
     os.makedirs(download_dir, exist_ok=True)
 
     ydl_opts = {}
 
     if mode == 'video':
-        print("🎬 جاري تحميل الفيديو بأعلى جودة...")
+        print("🎬 جاري تحميل الفيديو بأعلى جودة متاحة...")
         ydl_opts = {
             'format': 'bestvideo+bestaudio/best',
             'outtmpl': os.path.join(download_dir, '%(title)s.%(ext)s'),
         }
     elif mode == 'audio':
-        print("🎵 جاري استخراج وتحميل الصوت (MP3)...")
+        print("🎵 جاري استخراج وتحميل الملف الصوتي (MP3)...")
         ydl_opts = {
             'format': 'bestaudio/best',
             'postprocessors': [{
@@ -25,7 +26,7 @@ def download_youtube(url, mode='video'):
             'outtmpl': os.path.join(download_dir, '%(title)s.%(ext)s'),
         }
     elif mode == 'text':
-        print("📄 جاري استخراج ملف النصوص والترجمة...")
+        print("📄 جاري استخراج ملفات النصوص والترجمة...")
         ydl_opts = {
             'skip_download': True,
             'writesubtitles': True,
@@ -37,12 +38,31 @@ def download_youtube(url, mode='video'):
     try:
         with YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
-            print("✅ تم التحميل بنجاح وتم حفظ الملف داخل مجلد 'downloads'.")
+            print("✅ تمت العملية بنجاح! تم حفظ الملفات داخل مجلد 'downloads'.")
     except Exception as e:
-        print(f"❌ حدث خطأ أثناء العملية: {e}")
+        print(f"❌ حدث خطأ أثناء عملية التحميل: {e}")
 
 if __name__ == "__main__":
-    # رابط تجريبي أو افتراضي لتشغيل السكريبت تلقائياً عبر غيت هاب
-    test_url = os.environ.get('YOUTUBE_URL', 'https://www.youtube.com/watch?v=BaW_jenozKc')
-    print(f"=== بدء المعالجة للرابط: {test_url} ===")
-    download_youtube(test_url, mode='audio')
+    print("=== نظام التحميل التلقائي (yt-dlp) ===")
+    
+    # التحقق مما إذا كان الرابط قادماً من بيئة غيت هاب أومرفوعاً كمتغير بيئة، وإلا يطلب مدخلات محلية
+    test_url = os.environ.get('YOUTUBE_URL', '').strip()
+    
+    if not test_url:
+        video_url = input("أدخل رابط فيديو يوتيوب أو Short: ").strip()
+        print("\nاختر وضع التحميل:")
+        print("1. فيديو (video)")
+        print("2. صوت فقط (audio)")
+        print("3. نص / ترجمة (text)")
+        
+        choice = input("أدخل الرقم (1 أو 2 أو 3): ").strip()
+        mode_map = {'1': 'video', '2': 'audio', '3': 'text'}
+        selected_mode = mode_map.get(choice, 'video')
+    else:
+        video_url = test_url
+        selected_mode = 'audio' # الوضع الافتراضي عند التشغيل التلقائي بالسحاب
+    
+    if video_url:
+        download_youtube(video_url, selected_mode)
+    else:
+        print("⚠️ الرابط فارغ أو غير صالح! يرجى التأكد من الإدخال.")
