@@ -22,8 +22,30 @@ jobs:
           python -m pip install --upgrade pip
           pip install yt-dlp
 
-      - name: Run Downloader Script
+      - name: Create and Run Downloader Script
         env:
           YOUTUBE_URL: 'https://www.youtube.com/watch?v=BaW_jenozKc'
         run: |
-          python ./downloader.py
+          # إنشاء ملف البايثون تلقائياً أثناء التشغيل لتجنب مشاكل الرفع
+          cat << 'EOF' > downloader.py
+          import os
+          from yt_dlp import YoutubeDL
+
+          url = os.getenv('YOUTUBE_URL')
+          if not url:
+              print("Error: YOUTUBE_URL is not set")
+              exit(1)
+
+          print(f"Downloading: {url}")
+          ydl_opts = {
+              'format': 'best',
+              'outtmpl': '%(title)s.%(ext)s',
+          }
+
+          with YoutubeDL(ydl_opts) as ydl:
+              info = ydl.extract_info(url, download=True)
+              print(f"Successfully downloaded: {info.get('title')}")
+          EOF
+
+          # تشغيل السكربت فوراً
+          python downloader.py
